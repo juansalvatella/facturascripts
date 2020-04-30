@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  facturas:
+    image: facturascripts/facturascripts:latest
+    restart: always
+    ports:
+    - "8888:80"
+    depends_on:
+    - "mysql"
+    volumes:
+    - type: bind
+      source: /Users/joansalvatella/Applications/fs/app
+      target: /facturascripts-home
+    links:
+    - mysql:mysql
+  mysql:
+    image: mysql:5.6
+    environment:
+        MYSQL_ROOT_PASSWORD: 'monrabapastis'
+    restart: always
+    ports:
+        - 3306:3306
+    volumes:
+        - type: bind
+          source: /Users/joansalvatella/Applications/fs/data
+          target: /var/lib/mysql
+    command: --character-set-server=utf8 --collation-server=utf8_unicode_ci --default_authentication_plugin=mysql_native_password
